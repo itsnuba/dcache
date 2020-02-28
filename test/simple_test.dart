@@ -15,6 +15,16 @@ void main() {
     c.set("key", 42);
     expect(c.get("key"), equals(42));
   });
+  test("Test simple insert/get with expiration", () {
+    Cache c = new SimpleExpCache<String, int>(storage: new SimpleStorage(size: 20))
+      ..expiration = const Duration(milliseconds: 200);
+
+    c.set("key", 42);
+    expect(c.get("key"), equals(42));
+    sleep(const Duration(seconds: 1));
+
+    expect(c.get("key"), equals(null));
+  });
   test("Test simple loader function", () {
     Cache<int, int> c =
         new SimpleCache<int, int>(storage: new SimpleStorage(size: 20))
